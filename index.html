@@ -907,7 +907,7 @@
       <input type="email" id="popup-email" placeholder="Seu melhor e-mail*">
       <div class="phone-wrap">
         <input class="phone-code" value="🇧🇷 +55" readonly>
-        <input type="tel" placeholder="(11) 99999-9999">
+        <input type="tel" id="popup-telefone" inputmode="numeric" pattern="[0-9]*" placeholder="(11) 99999-9999">
       </div>
       <button class="popup-btn" onclick="submitPopup()">QUERO MEU DESCONTO!</button>
     </div>
@@ -1544,11 +1544,42 @@ function checkoutWhatsApp() {
 
 // ── POPUP ──
 function closePopup() { document.getElementById('popup-overlay').classList.add('hidden'); }
-function submitPopup() {
-  const email = document.getElementById('popup-email').value;
-  if (!email || !email.includes('@')) { showToast('❌ Digite um e-mail válido.'); return; }
-  showToast('🎉 Cupom PRIMEIRA15 enviado! Aproveite!');
+// ── SUPABASE CONFIG ──
+const SUPABASE_URL = 'https://kbjotesgkprvzlywqort.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtiam90ZXNna3BydnpseXdxb3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NjY4MjUsImV4cCI6MjA4OTU0MjgyNX0.K-El7Vh2-NurVrlLR4UxMv7YnxzPmiwDDe4wM584eRU';
+
+async function submitPopup() {
+  const email = document.getElementById('popup-email').value.trim();
+  const telefone = document.getElementById('popup-telefone').value.trim();
+
+  if (!email || !email.includes('@')) {
+    showToast('❌ Digite um e-mail válido.');
+    return;
+  }
+  if (!telefone) {
+    showToast('❌ Digite seu WhatsApp.');
+    return;
+  }
+
+  // Fecha o popup e mostra mensagem imediatamente
   closePopup();
+  showToast('🎉 Cupom PRIMEIRA15 ativado! Aproveite!');
+
+  // Salva no Supabase em background
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/leads`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ email, telefone })
+    });
+  } catch (err) {
+    console.log('Erro ao salvar lead:', err);
+  }
 }
 setTimeout(() => {
   if (!sessionStorage.getItem('popup_shown')) {
