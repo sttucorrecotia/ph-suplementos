@@ -98,7 +98,7 @@
     color: var(--green); letter-spacing: 3px;
   }
 
-  .popup-form input {
+  .popup-form input:not(#popup-telefone) {
     width: 100%;
     background: var(--dark3);
     border: 1.5px solid #333;
@@ -131,7 +131,7 @@
   }
   .phone-code:focus { border-color: var(--green); }
   .phone-wrap input { margin-bottom: 0; }
-  .phone-wrap #popup-telefone { flex: 1; min-width: 0; }
+  .phone-wrap #popup-telefone { flex: 1; min-width: 0; width: auto; }
 
   .popup-btn {
     width: 100%;
