@@ -126,10 +126,9 @@
     font-size: 14px;
     font-family: var(--font-body);
     width: 88px; flex-shrink: 0;
-    outline: none;
-    transition: border-color .2s;
+    display: flex; align-items: center;
+    white-space: nowrap;
   }
-  .phone-code:focus { border-color: var(--green); }
   .phone-wrap input { margin-bottom: 0; }
   .phone-wrap #popup-telefone { flex: 1; min-width: 0; width: auto; }
 
@@ -907,8 +906,8 @@
     <div class="popup-form">
       <input type="email" id="popup-email" placeholder="Seu melhor e-mail*">
       <div class="phone-wrap">
-        <input class="phone-code" value="🇧🇷 +55" readonly>
-        <input type="tel" id="popup-telefone" inputmode="numeric" pattern="[0-9]*" placeholder="(11) 99999-9999">
+        <span class="phone-code">🇧🇷 +55</span>
+        <input type="tel" id="popup-telefone" inputmode="numeric" pattern="[0-9]*" placeholder="(11) 99999-9999" style="flex:1; min-width:0; width:auto; background:var(--dark3); border:1.5px solid #333; border-radius:8px; color:var(--white); padding:13px 16px; font-size:14px; font-family:var(--font-body); outline:none; transition:border-color .2s; margin-bottom:0;">
       </div>
       <button class="popup-btn" onclick="submitPopup()">QUERO MEU DESCONTO!</button>
     </div>
